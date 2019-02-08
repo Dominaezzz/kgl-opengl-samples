@@ -4,6 +4,8 @@ plugins {
     kotlin("multiplatform") version("1.3.21")
 }
 repositories {
+    maven(url = "https://dl.bintray.com/dominaezzz/kotlin-native")
+    
     jcenter()
     mavenCentral()
 }

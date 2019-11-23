@@ -17,5 +17,5 @@ A collection of open source samples for OpenGL written using the help of [kgl](h
 
 ## Examples
 
-### [1 - Triangle](src/nativeMain/kotlin/triangle/Main.kt)
+### [1 - Triangle](src/main/kotlin/triangle/Main.kt)
 Simple render of a triangle.

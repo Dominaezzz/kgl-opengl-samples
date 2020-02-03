@@ -3,7 +3,6 @@ package triangle
 import com.kgl.glfw.Glfw
 import com.kgl.glfw.OpenGLProfile
 import com.kgl.glfw.Window
-import com.kgl.glfw.pollEvents
 import com.kgl.opengl.*
 import kotlinx.cinterop.*
 
@@ -45,13 +44,9 @@ fun main() {
     }
     Glfw.currentContext = window
 
-    println(glGetString(GL_VERSION)!!.reinterpret<ByteVar>().toKString())
+    println(glGetString(GL_VERSION))
 
-    val vertexArrayID = memScoped {
-        val output = alloc<UIntVar>()
-        glGenVertexArrays(1, output.ptr)
-        output.value
-    }
+    val vertexArrayID = glGenVertexArray()
     glBindVertexArray(vertexArrayID)
 
     val vertexBufferData = floatArrayOf(
@@ -60,29 +55,25 @@ fun main() {
         0.0f,  1.0f, 0.0f
     )
 
-    val vertexBuffer = memScoped {
-        val output = alloc<UIntVar>()
-        glGenBuffers(1, output.ptr)
-        output.value
-    }
+    val vertexBuffer = glGenBuffer()
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer)
 
     vertexBufferData.usePinned {
         glBufferData(GL_ARRAY_BUFFER, vertexBufferData.size.toLong() * 4, it.addressOf(0), GL_STATIC_DRAW)
     }
 
-    val programId = memScoped {
+    val programId = run {
         val vertexShaderId = glCreateShader(GL_VERTEX_SHADER)
         val fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER)
 
-        glShaderSource(vertexShaderId, 1, arrayOf(vertexShaderSource).toCStringArray(memScope), null)
+        glShaderSource(vertexShaderId, vertexShaderSource)
         glCompileShader(vertexShaderId)
 
         glGetShaderInfoLog(vertexShaderId).also {
             if (it.isNotBlank()) println()
         }
 
-        glShaderSource(fragmentShaderId, 1, arrayOf(fragmentShaderSource).toCStringArray(memScope), null)
+        glShaderSource(fragmentShaderId, fragmentShaderSource)
         glCompileShader(fragmentShaderId)
 
         glGetShaderInfoLog(fragmentShaderId).also {
@@ -119,7 +110,7 @@ fun main() {
             0U,
             3,
             GL_FLOAT,
-            false.toByte().toUByte(),
+            false,
             0,
             0L.toCPointer<CPointed>()
         )
@@ -128,7 +119,7 @@ fun main() {
         glDisableVertexAttribArray(0U)
 
         window.swapBuffers()
-        pollEvents()
+        Glfw.pollEvents()
     } while (!window.shouldClose)
 
     window.close()

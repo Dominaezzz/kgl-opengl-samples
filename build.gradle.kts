@@ -2,7 +2,7 @@ import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
-    kotlin("multiplatform") version("1.3.60")
+    kotlin("multiplatform") version("1.3.61")
 }
 
 repositories {
@@ -11,6 +11,8 @@ repositories {
     jcenter()
     mavenCentral()
 }
+
+val kglVersion = "0.1.9-dev-6"
 
 kotlin {
     val os = OperatingSystem.current()
@@ -36,8 +38,9 @@ kotlin {
                     resources.srcDir("src/main/resources")
                 }
                 dependencies {
-                    implementation("com.kgl:kgl-glfw:0.1.8-dev-9")
-                    implementation("com.kgl:kgl-opengl:0.1.8-dev-9")
+                    implementation("com.kgl:kgl-glfw:$kglVersion")
+                    implementation("com.kgl:kgl-glfw-static:$kglVersion")
+                    implementation("com.kgl:kgl-opengl:$kglVersion")
                 }
             }
             "test" {

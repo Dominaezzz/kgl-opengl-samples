@@ -185,7 +185,7 @@ fun loadTexture(path: String): UInt {
             }
 
             override fun skip(n: Int) {
-                fseek(file, n.toLong(), SEEK_CUR)
+                fseek(file, n.convert(), SEEK_CUR)
             }
 
             override val eof: Boolean get() = feof(file) != 0

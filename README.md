@@ -16,3 +16,6 @@ A collection of open source samples for OpenGL written using the help of [kgl](h
 
 ### [1 - Triangle](src/main/kotlin/triangle/Main.kt)
 Simple render of a triangle.
+
+### [2 - Texture](src/main/kotlin/texture/Main.kt)
+Simple render of a textured quad.

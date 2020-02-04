@@ -21,13 +21,14 @@ kotlin {
     if (os.isLinux) linuxX64()
     if (os.isMacOsX) macosX64()
 
-    val samples = listOf("triangle")
+    val samples = listOf("triangle", "texture")
 
     targets.withType<KotlinNativeTarget> {
         binaries {
             for (sample in samples) {
                 executable(sample) {
                     entryPoint = "$sample.main"
+                    runTask!!.workingDir("src/main/resources")
                 }
             }
         }
@@ -41,6 +42,7 @@ kotlin {
                     implementation("com.kgl:kgl-glfw:$kglVersion")
                     implementation("com.kgl:kgl-glfw-static:$kglVersion")
                     implementation("com.kgl:kgl-opengl:$kglVersion")
+                    implementation("com.kgl:kgl-stb:$kglVersion")
                 }
             }
             "test" {
